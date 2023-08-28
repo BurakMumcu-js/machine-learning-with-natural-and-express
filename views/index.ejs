@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İris Türü Hesapla</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="calculate-card" id="calculate-card">
+    <div id="output"></div>
+    <div class="card-header">
+        <h1 class="d-none" style="text-align: center; color: white; border: 1px solid white" id="result"></h1>
+        <div class="text-header">İris Türünü Hesaplama</div>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="petalLength">Sepal Uzunluğu :</label>
+            <input required="" class="form-control" name="SepalUzunluğu" id="petalLength" type="text">
+        </div>
+        <div class="form-group">
+            <label for="petalWidth">Sepal Genişliği:</label>
+            <input required="" class="form-control" name="SepalGenişliği" id="petalWidth" type="text">
+        </div>
+        <div class="form-group">
+            <label for="sepalLength">Petal Uzunluğu:</label>
+            <input required="" class="form-control" name="PetalUzunluğu" id="sepalLength" type="text">
+        </div>
+        <div class="form-group">
+            <label for="sepalWidth">Petal Genişliği:</label>
+            <input required="" class="form-control" name="PetalGenişliği" id="sepalWidth" type="text">
+        </div>
+        <button class="btn" id="button">
+            Hesapla
+        </button>
+    </div>
+
+</div>
+<script>
+    const trainingData = []
+    const handleSubmit = (e) => {
+        console.log('asd')
+        const calculateCard = document.getElementById('calculate-card');
+        let petalLength = document.getElementById('petalLength').value.replace(/[,.]/g, '');
+        let petalWidth = document.getElementById('petalWidth').value.replace(/[,.]/g, '');
+        let sepalLength = document.getElementById('sepalLength').value.replace(/[,.]/g, '');
+        let sepalWidth = document.getElementById('sepalWidth').value.replace(/[,.]/g, '');
+        const inputFeatures = `${sepalLength} ${sepalWidth} ${petalLength} ${petalWidth}`;
+        const body = {
+            input: inputFeatures
+        }
+
+        fetch('/calculate', {
+            method: 'POST', // Use POST method
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body) // Convert data to JSON format
+        })
+            .then(response => response.json())
+            .then(data => {
+                const result = document.getElementById('result')
+                result.classList.remove('d-none')
+                result.innerText = data.result
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
+    };
+    const button = document.getElementById('button');
+    button.addEventListener('click', handleSubmit)
+
+
+</script>
+</body>
+</html>
